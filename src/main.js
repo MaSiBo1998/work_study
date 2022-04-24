@@ -1,8 +1,10 @@
 // 入口文件
 // 第一步,先引入 vue 和组件
 import Vue from 'vue'
+// import ElementUI from 'element-ui';
+// import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue'
-
+Vue.use(ElementUI);
 // 创建vm实例
 new Vue({
     el:"#app",

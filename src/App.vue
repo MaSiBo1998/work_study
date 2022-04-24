@@ -28,7 +28,8 @@ export default {
     name:'App',
     data(){
         return {
-            todos:JSON.parse(localStorage.getItem('todos')) || []
+            todos:JSON.parse(localStorage.getItem('todos')) || [],
+            value1:'',
         }
     },
     components:{MyHeader,MyTodo,MyFooter},

@@ -4,9 +4,16 @@
             <input type="checkbox" :checked="todo.done" @change="checkbox(todo.id)"/> 
             <!-- 如下代码也能实现功能，但是不太推荐，因为有点违反原则，因为修改了props -->
 			<!-- <input type="checkbox" v-model="todo.done"/> -->
-            <span>{{todo.title}}</span>
+            <span v-show="!todo.isEdit">{{todo.title}}</span>
+            <input 
+            type="text"
+            v-show="todo.isEdit"
+            :value="todo.title"
+            @blur="handlerBlur(todo,$event)"
+            ref="inputTitle">
           </label>
           <button class="btn btn-danger" @click="deleteItem(todo.id)">删除</button>
+          <button class="btn btn-edit" v-show="!todo.isEdit" @click="editItem(todo)">编辑</button>
         </li>
 </template>
 
@@ -37,6 +44,23 @@ export default {
                 pubsub.publish('deleteTodo',id)
             }
             // 将获得的id交给app组件进行删除操作
+        },
+        // 修改选中项
+        editItem(todo){
+          if(todo.hasOwnProperty('isEdit')){
+            todo.isEdit = true
+          }else{
+            this.$set(todo,'isEdit',true)
+          }
+          this.$nextTick(function(){
+				  	this.$refs.inputTitle.focus()
+				  })
+        },
+        // 焦点事件
+        handlerBlur(todo,e){
+          todo.isEdit = false
+				if(!e.target.value.trim()) return alert('输入不能为空！')
+				this.$bus.$emit('updateTodo',todo.id,e.target.value)
         }
     },
     // 接收到从app组件传递到todo组件,然后传进来的组件

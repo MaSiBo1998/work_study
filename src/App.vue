@@ -11,6 +11,8 @@
     <!-- 给子组件绑定ref,然后通过this.refs.xiaowang 找到子组件实例,然后通过$on给组件实例绑定自定义事件 -->
     <!-- 如果给子组件判定全局事件,可以使用@click.native实现 -->
     <XiaoWang ref="xiaowang"></XiaoWang>
+    <XiaoWang2></XiaoWang2>
+    <XiaoWang3></XiaoWang3>
    </div>
 </template>
 
@@ -18,12 +20,17 @@
 // 第一步先引入组件
 import XiaoMa from './components/XiaoMa.vue'
 import XiaoWang from './components/XiaoWang.vue'
+import XiaoWang2 from './components/XiaoWang2.vue'
+import XiaoWang3 from './components/XiaoWang3.vue'
+
 export default {
     // 注册组件
     name:'App',
     components:{
         XiaoMa,
-        XiaoWang
+        XiaoWang,
+        XiaoWang2,
+        XiaoWang3
     },
     methods:{
         // 获取子组件传递过来的组件数据

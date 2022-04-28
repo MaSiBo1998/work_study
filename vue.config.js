@@ -6,5 +6,25 @@ module.exports = {
       },
     },
       lintOnSave:false, //关闭语法检查
-    
+    //开启代理服务器（方式一）
+	/* devServer: {
+    proxy: 'http://localhost:5000'
+  }, */
+	//开启代理服务器（方式二）
+	devServer: {
+    proxy: {
+      '/test1': {
+        target: 'http://localhost:5000',
+				pathRewrite:{'^/test1':''},
+        // ws: true, //用于支持websocket
+        // changeOrigin: true //用于控制请求头中的host值
+      },
+      '/test2': {
+        target: 'http://localhost:5001',
+				pathRewrite:{'^/test2':''},
+        // ws: true, //用于支持websocket
+        // changeOrigin: true //用于控制请求头中的host值
+      }
+    }
+  }
   }

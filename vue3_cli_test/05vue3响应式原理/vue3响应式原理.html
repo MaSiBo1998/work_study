@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let person = {
+            name:'小马',
+            age:18
+        }
+        // 模拟vue2中响应式原理
+        // let p={}
+        // Object.defineProperty(p,'name',{
+        //     get(){
+        //         console.log('有人读取了name')
+        //         return person.name
+        //     },
+        //     set(value){
+        //         console.log('有人修改了name,我去修改页面了')
+        //         person.name = value
+        //     }
+        // })
+        // Object.defineProperty(p,'age',{
+        //     get(){
+        //         console.log('有人读取了age')
+        //         return person.age
+        //     },
+        //     set(value){
+        //         console.log('有人修改了age,我去修改页面了')
+        //         person.age = value
+        //     }
+        // })
+
+
+        // 模拟vue3中的响应式原理
+        const p = new Proxy(person,{
+            // 当有人读取p身上的属性时,get会被调用
+            get(target,propName){
+                console.log(`p身上的${propName}属性被读取了`)
+                // return target[propName]
+                return Reflect.get(target,propName)
+            },
+            // 当有人修改或者给p追加属性时,set都会被调用
+            set(target,propName,value){
+                console.log(`p身上的${propName}属性被修改成了${value},现在去更新页面`)
+                // target[propName] =value
+                Reflect.set(target,propName,value)
+            },
+            // 当有人删除p身上的某个属性时,deleteProperty会被调用
+            deleteProperty(target,propName){
+                console.log(`p身上的${propName}属性被删除了`)
+                // return delete target[propName]
+                return Reflect.deleteProperty(target,propName)
+            }
+        })
+
+        // vue3中,为什么使用Reflect 去操作数据
+        // js是单线程的,当依旧使用Object.defineProperty去操作数据时,如果有错误,那么整个代码执行都会被停下,如果使用Reflect反射来操作,它会有一个返回值,来判断是否执行成功
+        let obj = {a:1,b:2}
+			//通过Object.defineProperty去操作
+			//#region 
+			/* try {
+				Object.defineProperty(obj,'c',{
+					get(){
+						return 3
+					}
+				})
+				Object.defineProperty(obj,'c',{
+					get(){
+						return 4
+					}
+				})
+			} catch (error) {
+				console.log(error)
+			} */
+			//#endregion
+
+			//通过Reflect.defineProperty去操作
+			//#region 
+			/* const x1 = Reflect.defineProperty(obj,'c',{
+				get(){
+					return 3
+				}
+			})
+			console.log(x1)
+			
+			const x2 = Reflect.defineProperty(obj,'c',{
+				get(){
+					return 4
+				}
+			}) 
+			if(x2){
+				console.log('某某某操作成功了！')
+			}else{
+				console.log('某某某操作失败了！')
+			} */
+			//#endregion
+
+			// console.log('@@@')
+    </script>
+</body>
+</html>
